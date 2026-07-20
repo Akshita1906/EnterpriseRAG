@@ -8,3 +8,4 @@ pymupdf
 python-multipart
 python-dotenv
 pydantic-settings
+langchain-google-genai
