@@ -17,14 +17,15 @@ class VectorStore:
         self.embedding = EmbeddingModel().get_model()
 
     def create_collection(self):
-        self.client.recreate_collection(
-            collection_name="enterprise_rag",
-            vectors_config= VectorParams(size=384, distance=Distance.COSINE)
-        )
+        if not self.client.collection_exists("enterprise_rag"):
+            self.client.create_collection(
+                collection_name="enterprise_rag",
+                vectors_config=VectorParams(size=384, distance=Distance.COSINE)
+            )
 
     def get_vector_store(self):
         return QdrantVectorStore.from_existing_collection(
+            client=self.client,
             collection_name="enterprise_rag",
-            embedding=self.embedding,
-            client=self.client
+            embedding=self.embedding
         )
